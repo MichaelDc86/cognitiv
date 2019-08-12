@@ -1,0 +1,13 @@
+Click
+Flask
+itsdangerous
+Jinja2
+MarkupSafe
+Werkzeug
+flask-httpauth
+psycopg2
+flask-sqlalchemy
+Flask-Migrate
+sqlalchemy-migrate
+flask-restful
+python-dotenv
