@@ -1,0 +1,41 @@
+git clone https://github.com/MichaelDc86/cognitiv.git
+
+cd cognitiv
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+cd api
+
+sudo -u postgres psql
+CREATE DATABASE my;
+CREATE USER cognitiv with NOSUPERUSER PASSWORD '1234567';
+GRANT ALL PRIVILEGES ON DATABASE my TO cognitiv;
+
+ALTER ROLE cognitiv SET CLIENT_ENCODING TO 'UTF8';
+ALTER ROLE cognitiv SET default_transaction_isolation TO 'READ COMMITTED';
+ALTER ROLE cognitiv SET TIME ZONE 'Europe/Moscow';
+\q
+
+flask db init
+flask db migrate
+flask db upgrade
+
+flask run
+
+""" create first user = admin_user in another terminal"""
+
+sudo -u postgres psql
+\c my
+\dt
+INSERT INTO public.user (username, email, is_admin, password) VALUES ('admin', 'admin@ya.ru', True, '12345');
+
+""" in another terminal run bot.py """
+
+python3 bot.py
+
+"""
+    bot.py realizes get - (resp_read_all, resp_read_user)
+    creates and after it deletes user
+"""

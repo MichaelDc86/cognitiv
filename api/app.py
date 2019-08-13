@@ -115,21 +115,31 @@ class LoginAPI(Resource):
                         'user_id': str(user.id)
                     }
 
-                    return json.dumps(response), 200
+                    # try:
+                    #     return json.dumps(response), 200
+                    # except TypeError:
+                    # return json.dumps(jsonify(response)), 200
+                    return response
             else:
                 response = {
                     'status': 'fail',
                     'message': 'User does not exist.'
                 }
-                return json.dumps(response), 404
+                # try:
+                #     return json.dumps(response), 404
+                # except TypeError:
+                # return json.dumps(jsonify(response)), 404
 
         except Exception as e:
             print(e)
-            # response = {
-            #     'status': 'fail',
-            #     'message': 'Try again'
-            # }
-            return jsonify(status='fail', message='Try again'), 500
+            response = {
+                'status': 'fail',
+                'message': 'Try again'
+            }
+            # try:
+            #     return jsonify(status='fail', message='Try again'), 500
+            # except TypeError:
+            # return json.dumps(jsonify(response)), 500
 
 
 api.add_resource(UserCrud, '/', '/<string:user_id>', '/user/<string:delete_id>')
