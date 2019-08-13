@@ -11,3 +11,6 @@ Flask-Migrate
 sqlalchemy-migrate
 flask-restful
 python-dotenv
+pyjwt
+flask-bcrypt
+requests
