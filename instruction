@@ -1,3 +1,4 @@
+cd 'your directory'
 git clone https://github.com/MichaelDc86/cognitiv.git
 
 cd cognitiv
@@ -29,10 +30,16 @@ flask run
 sudo -u postgres psql
 \c my
 \dt
-INSERT INTO public.user (username, email, is_admin, password) VALUES ('admin', 'admin@ya.ru', True, '12345');
+INSERT INTO public.user (username, email, is_admin, password) VALUES (
+ 'admin',
+ 'admin@ya.ru',
+  True,
+ '$2b$12$H6kOZYD5IlvJQTuObJgXdet8tYDytPodPz4tlfk7Z4Okzu0zvG83S'
+ );
 
 """ in another terminal run bot.py """
 
+cd api
 python3 bot.py
 
 """

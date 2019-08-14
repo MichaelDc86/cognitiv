@@ -6,8 +6,7 @@ class Config(object):
 
     # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
     #     'sqlite:///' + os.path.join(basedir, 'my.db')
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://cognitiv:19051986@localhost:5432/my'
-    # 'postgresql: // user: password @ localhost:5432 / database_name'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://cognitiv:1234567@localhost:5432/my'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious')

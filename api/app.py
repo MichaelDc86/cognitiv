@@ -75,11 +75,13 @@ class UserCrud(Resource):
     @login_required
     @is_admin_user
     def delete(self, delete_id):
-        user = User.query.filter_by(id=int(delete_id[-1::])).first()
-        db.session.delete(user)
-        db.session.commit()
-
-        return jsonify(f'User {user} was deleted!')
+        try:
+            user = User.query.filter_by(id=int(delete_id[-1::])).first()
+            db.session.delete(user)
+            db.session.commit()
+            return jsonify(f'User {user} was deleted!')
+        except Exception:
+            return jsonify(f'Can`t delete(find) user wuth id {int(delete_id[-1::])}')
 
     @staticmethod
     def validate_data():
@@ -95,16 +97,16 @@ class UserCrud(Resource):
 
 class LoginAPI(Resource):
 
-    def post(self):
+    @staticmethod
+    def post():
         post_data = request.form
-
         try:
 
             user = User.query.filter_by(
                 email=post_data.get('email')
               ).first()
             if user and bcrypt.check_password_hash(
-                    user.password, post_data.get('password')
+                    user.password, post_data.get('password'),
             ):
                 auth_token = user.encode_auth_token(user.id)
                 if auth_token:
@@ -115,20 +117,15 @@ class LoginAPI(Resource):
                         'user_id': str(user.id)
                     }
 
-                    # try:
-                    #     return json.dumps(response), 200
-                    # except TypeError:
-                    # return json.dumps(jsonify(response)), 200
-                    return response
+                    return json.dumps(response), 200
+
             else:
                 response = {
                     'status': 'fail',
                     'message': 'User does not exist.'
                 }
-                # try:
-                #     return json.dumps(response), 404
-                # except TypeError:
-                # return json.dumps(jsonify(response)), 404
+
+                return json.dumps(response), 404
 
         except Exception as e:
             print(e)
@@ -136,10 +133,9 @@ class LoginAPI(Resource):
                 'status': 'fail',
                 'message': 'Try again'
             }
-            # try:
-            #     return jsonify(status='fail', message='Try again'), 500
-            # except TypeError:
-            # return json.dumps(jsonify(response)), 500
+
+            # return json.dumps(response), 500
+            return jsonify(status='fail', message='Try again'), 500
 
 
 api.add_resource(UserCrud, '/', '/<string:user_id>', '/user/<string:delete_id>')

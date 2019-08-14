@@ -17,7 +17,7 @@ def main():
     resp_read_all = s.get(url=url).json()
     resp_read_user = s.get(url=url+'user1').json()
     response = s.post(url=url_login, data=data).json()
-    print(response)
+
     try:
         dict_resp = json.loads(response)
         token = dict_resp.get('auth_token')
@@ -36,10 +36,11 @@ def main():
         'Authorization': token,
         'logged_in_user': logged_in_user
     }
-    # resp_create = s.post(url=url_create, data=data_create, headers=headers).json()
-    # resp_delete = s.delete(url=url_delete, data=data_create, headers=headers).json()
+    resp_create = s.post(url=url_create, data=data_create, headers=headers).json()
+    resp_delete = s.delete(url=url_delete, data=data_create, headers=headers).json()
 
-    return resp_read_all, resp_read_user  # , resp_delete
+    return resp_read_all, resp_read_user, resp_delete, resp_create
 
 
-print(main())
+if __name__ == '__main__':
+    print(main())
