@@ -46,3 +46,8 @@ python3 bot.py
     bot.py realizes get - (resp_read_all, resp_read_user)
     creates and after it deletes user
 """
+
+"""
+    for testing run command
+"""
+pytest

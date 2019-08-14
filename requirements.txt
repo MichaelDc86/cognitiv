@@ -15,3 +15,5 @@ pyjwt
 flask-bcrypt
 requests
 pillow
+pytest
+Flask-Testing

@@ -30,10 +30,10 @@ class UserCrud(Resource):
         return request
 
     @staticmethod
-    def get(user_id=None):
+    def get(_id=None):
         users_list = []
-        if user_id and user_id != 'favicon.ico':
-            users = User.query.filter_by(id=int(user_id[-1::])).first()
+        if _id and _id != 'favicon.ico':
+            users = User.query.filter_by(id=int(_id)).first()
             return jsonify({'users': users.username})
         else:
             users = User.query.all()
@@ -43,7 +43,7 @@ class UserCrud(Resource):
 
     @login_required
     @is_admin_user
-    def post(self, user_id=None):
+    def post(self, _id=None):
         data = self.validate_data()
         if data:
             if data.get('is_admin') == 'True' or data.get('is_admin') == '1':
@@ -60,10 +60,12 @@ class UserCrud(Resource):
                 db.session.commit()
 
                 auth_token = new_user.encode_auth_token(new_user.id)
+                new_user_extra_data = User.query.filter_by(username=new_user.username).first()
                 response = {
                     'status': 'success',
                     'message': 'Successfully created!',
-                    'auth_token': auth_token.decode()
+                    'auth_token': auth_token.decode(),
+                    'id_user_created': new_user_extra_data.id
                 }
                 return json.dumps(response), 201
                 # return jsonify(f'user {new_user} was created!')
@@ -74,14 +76,14 @@ class UserCrud(Resource):
 
     @login_required
     @is_admin_user
-    def delete(self, delete_id):
+    def delete(self, _id):
         try:
-            user = User.query.filter_by(id=int(delete_id[-1::])).first()
+            user = User.query.filter_by(id=int(_id)).first()
             db.session.delete(user)
             db.session.commit()
             return jsonify(f'User {user} was deleted!')
         except Exception:
-            return jsonify(f'Can`t delete(find) user wuth id {int(delete_id[-1::])}')
+            return jsonify(f'Can`t delete(find) user wuth id {int(_id)}')
 
     @staticmethod
     def validate_data():
@@ -138,7 +140,7 @@ class LoginAPI(Resource):
             return jsonify(status='fail', message='Try again'), 500
 
 
-api.add_resource(UserCrud, '/', '/<string:user_id>', '/user/<string:delete_id>')
+api.add_resource(UserCrud, '/', '/user/<string:_id>', '/user/delete/<string:_id>')
 api.add_resource(LoginAPI, '/login')
 
 
