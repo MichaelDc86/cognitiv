@@ -29,7 +29,7 @@ flask run
 
 sudo -u postgres psql
 \c my
-\dt
+
 INSERT INTO public.user (username, email, is_admin, password) VALUES (
  'admin',
  'admin@ya.ru',

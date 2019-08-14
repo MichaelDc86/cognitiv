@@ -42,11 +42,15 @@ def test_create():
         'logged_in_user': logged_in_user
     }
     resp = s.post(url=url_create, data=data_create, headers=headers).json()
+    cur_user = User.query.filter_by(username=data_create['username']).first()
     ans = {
         "status": "success",
         "message": "Successfully created!",
-        "auth_token": json.loads(resp)['auth_token']
+        "auth_token": json.loads(resp)['auth_token'],
+        "id_user_created": cur_user.id
     }
+    url_delete = url + 'user/delete/' + str(cur_user.id)
+    resp_del = s.delete(url=url_delete, data=data_create, headers=headers).json()
     assert resp == json.dumps(ans)
 
 

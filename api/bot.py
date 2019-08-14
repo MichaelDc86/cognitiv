@@ -43,7 +43,7 @@ def main():
     except Exception:
         resp_delete = None
 
-    return resp_read_all, resp_read_user, resp_delete, resp_create
+    return resp_read_all, resp_read_user, resp_create, resp_delete
 
 
 if __name__ == '__main__':
