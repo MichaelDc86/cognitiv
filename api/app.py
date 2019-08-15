@@ -34,7 +34,10 @@ class UserCrud(Resource):
         users_list = []
         if _id and _id != 'favicon.ico':
             users = User.query.filter_by(id=int(_id)).first()
-            return jsonify({'users': users.username})
+            if users:
+                return jsonify({'users': users.username})
+            else:
+                return jsonify(f'No user with id = {_id}')
         else:
             users = User.query.all()
             for user in users:

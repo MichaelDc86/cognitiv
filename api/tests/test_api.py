@@ -15,8 +15,10 @@ data = {
 
 def test_get():
     s = requests.session()
-    resp = s.get(url=url).json()
-    assert resp == {'users': [{'1': 'admin'}]}
+    cur_user = User.query.filter_by(username=data['username']).first()
+    cur_url = url+'user/' + str(cur_user.id)
+    resp = s.get(url=cur_url).json()
+    assert resp == {'users': cur_user.username}
 
 
 def test_create():
